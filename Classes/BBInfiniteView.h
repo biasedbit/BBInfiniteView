@@ -26,6 +26,7 @@
 
 #pragma mark Public properties
 
+@property(strong, nonatomic) UIImage* background;
 @property(assign, nonatomic) CGFloat movementRatio;
 @property(assign, nonatomic) CGFloat displacement;
 
@@ -33,7 +34,6 @@
 #pragma mark Creation
 
 - (id)initWithFrame:(CGRect)frame andImage:(UIImage*)image;
-- (id)initWithFrame:(CGRect)frame image:(UIImage*)image andBackgroundColor:(UIColor*)color;
 
 
 #pragma mark Interface

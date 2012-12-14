@@ -32,13 +32,12 @@
     CGFloat _lastOffset;
 
     __strong UIView* _patternView;
-    __strong UIImage* _image;
-    __strong UIColor* _color;
 }
 
 
 #pragma mark Property synthesizers
 
+@synthesize background = _background;
 @synthesize movementRatio = _movementRatio;
 @synthesize displacement = _displacement;
 
@@ -47,28 +46,41 @@
 
 - (id)initWithFrame:(CGRect)frame andImage:(UIImage*)image
 {
-    return [self initWithFrame:frame image:image andBackgroundColor:nil];
-}
-
-- (id)initWithFrame:(CGRect)frame image:(UIImage*)image andBackgroundColor:(UIColor*)color
-{
     self = [super initWithFrame:frame];
     if (self != nil) {
-        _image = image;
-        _color = color;
-        _movementRatio = 1;
-        _displacement = 0;
-
-        _lastOffset = 0;
-
+        _background = image;
         [self setup];
+
+        [self recalculateInfiniteView];
     }
 
     return self;
 }
 
 
+#pragma mark UIView
+
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+
+    [self setup];
+}
+
+- (void)layoutSubviews
+{
+    [self recalculateInfiniteView];
+}
+
+
 #pragma mark Manual property accessors
+
+- (void)setBackground:(UIImage*)background
+{
+    _background = background;
+
+    [self setup];
+}
 
 - (void)setDisplacement:(CGFloat)displacement
 {
@@ -89,7 +101,7 @@
     // Multiply the normalized offset by the movement ratio
     normalizedOffset *= _movementRatio;
 
-    CGFloat movement = fmodf(normalizedOffset, _image.size.width);
+    CGFloat movement = fmodf(normalizedOffset, _background.size.width);
 
     CGRect frame = _patternView.frame;
     frame.origin.x = _originOffset - movement;
@@ -101,8 +113,20 @@
 
 - (void)setup
 {
+    _movementRatio = 1;
+    _displacement = 0;
+
+    _lastOffset = 0;
+}
+
+- (void)recalculateInfiniteView
+{
+    if (_background == nil) {
+        return;
+    }
+
     CGFloat a = self.bounds.size.width;
-    CGFloat b = _image.size.width;
+    CGFloat b = _background.size.width;
 
     // +2 to add one to the left and other to the right; makes the transition look seamless
     _offsetLimit = (ceilf(a / b) + 2) * b;
@@ -112,10 +136,15 @@
     patternFrame.origin.x = _originOffset;
     patternFrame.size.width = _offsetLimit;
 
-    _patternView = [[UIView alloc] initWithFrame:patternFrame];
-    _patternView.backgroundColor = [UIColor colorWithPatternImage:_image];
+    if (_patternView == nil) {
+        _patternView = [[UIView alloc] initWithFrame:patternFrame];
+        _patternView.backgroundColor = [UIColor colorWithPatternImage:_background];
+        [self addSubview:_patternView];
+    } else {
+        _patternView.frame = patternFrame;
+    }
 
-    [self addSubview:_patternView];
+    [self scrollToOffset:_lastOffset];
 }
 
 @end
