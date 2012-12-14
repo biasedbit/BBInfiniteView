@@ -36,7 +36,7 @@
 - (id)initWithFrame:(CGRect)frame image:(UIImage*)image andBackgroundColor:(UIColor*)color;
 
 
-#pragma mark Public methods
+#pragma mark Interface
 
 - (void)scrollToOffset:(CGFloat)offset;
 

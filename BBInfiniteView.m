@@ -78,7 +78,7 @@
 }
 
 
-#pragma mark Public methods
+#pragma mark Interface
 
 - (void)scrollToOffset:(CGFloat)offset
 {
