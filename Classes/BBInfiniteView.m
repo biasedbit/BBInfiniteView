@@ -31,7 +31,7 @@
     CGFloat _originOffset;
     CGFloat _lastOffset;
 
-    __strong UIView* _patternView;
+    UIView* _patternView;
 }
 
 
