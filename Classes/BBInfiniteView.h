@@ -24,7 +24,7 @@
 @interface BBInfiniteView : UIView
 
 
-#pragma mark Public properties
+#pragma mark Properties
 
 @property(strong, nonatomic) UIImage* background;
 @property(assign, nonatomic) CGFloat movementRatio;

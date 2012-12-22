@@ -34,14 +34,6 @@
     UIView* _patternView;
 }
 
-
-#pragma mark Property synthesizers
-
-@synthesize background = _background;
-@synthesize movementRatio = _movementRatio;
-@synthesize displacement = _displacement;
-
-
 #pragma mark Creation
 
 - (id)initWithFrame:(CGRect)frame andImage:(UIImage*)image
@@ -73,7 +65,7 @@
 }
 
 
-#pragma mark Manual property accessors
+#pragma mark Properties
 
 - (void)setBackground:(UIImage*)background
 {
@@ -121,9 +113,7 @@
 
 - (void)recalculateInfiniteView
 {
-    if (_background == nil) {
-        return;
-    }
+    if (_background == nil) return;
 
     CGFloat a = self.bounds.size.width;
     CGFloat b = _background.size.width;

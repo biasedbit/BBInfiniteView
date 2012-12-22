@@ -38,19 +38,6 @@ NSUInteger LeastCommonMultiple(NSUInteger a, NSUInteger b)
 }
 
 
-#pragma mark Property synthesizers
-
-@synthesize background = _background;
-@synthesize cloudLayerTwo = _cloudLayerTwo;
-@synthesize cloudLayerOne = _cloudLayerOne;
-@synthesize buildingSkylineThree = _buildingSkylineThree;
-@synthesize buildingSkylineTwo = _buildingSkylineTwo;
-@synthesize buildingSkylineOne = _buildingSkylineOne;
-@synthesize roadView = _roadView;
-@synthesize foremostView = _foremostView;
-@synthesize scrollView = _scrollView;
-
-
 #pragma mark UIViewController
 
 - (void)viewDidLoad
