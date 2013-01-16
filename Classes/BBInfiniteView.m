@@ -27,9 +27,9 @@
 
 @implementation BBInfiniteView
 {
-    CGFloat _offsetLimit;
-    CGFloat _originOffset;
-    CGFloat _lastOffset;
+    CGSize _offsetLimit;
+    CGPoint _originOffset;
+    CGPoint _lastOffset;
 
     UIView* _patternView;
 }
@@ -44,6 +44,7 @@
         [self setup];
 
         [self recalculateInfiniteView];
+        self.clipsToBounds = YES;
     }
 
     return self;
@@ -74,30 +75,44 @@
     [self setup];
 }
 
-- (void)setDisplacement:(CGFloat)displacement
+- (void)setDisplacement:(CGPoint)displacement
 {
     _displacement = displacement;
-    
+
     [self scrollToOffset:_lastOffset];
 }
 
 
 #pragma mark Interface
 
-- (void)scrollToOffset:(CGFloat)offset
+- (void)scrollToOffset:(CGPoint)offset
 {
     _lastOffset = offset;
 
     // Add the configured displacement to the offset input
-    CGFloat normalizedOffset = offset + _displacement;
-    // Multiply the normalized offset by the movement ratio
-    normalizedOffset *= _movementRatio;
+    CGFloat normalizedOffsetX = offset.x + _displacement.x;
+    CGFloat normalizedOffsetY = offset.y + _displacement.y;
 
-    CGFloat movement = fmodf(normalizedOffset, _background.size.width);
+    // Multiply the normalized offset by the movement ratio
+    normalizedOffsetX *= _movementRatio.width;
+    normalizedOffsetY *= _movementRatio.height;
+
+    CGFloat movementX = fmodf(normalizedOffsetX, _background.size.width);
+    CGFloat movementY = fmodf(normalizedOffsetY, _background.size.height);
 
     CGRect frame = _patternView.frame;
-    frame.origin.x = _originOffset - movement;
+    frame.origin = CGPointMake(_originOffset.x - movementX, _originOffset.y - movementY);
     _patternView.frame = frame;
+}
+
+- (void)scrollToHorizontalOffset:(CGFloat)offset
+{
+    [self scrollToOffset:CGPointMake(offset, _lastOffset.y)];
+}
+
+- (void)scrollToVerticalOffset:(CGFloat)offset
+{
+    [self scrollToOffset:CGPointMake(_lastOffset.x, offset)];
 }
 
 
@@ -105,26 +120,32 @@
 
 - (void)setup
 {
-    _movementRatio = 1;
-    _displacement = 0;
+    _movementRatio = CGSizeMake(1, 1);
+    _displacement = CGPointZero;
 
-    _lastOffset = 0;
+    _lastOffset = CGPointZero;
 }
 
 - (void)recalculateInfiniteView
 {
     if (_background == nil) return;
 
-    CGFloat a = self.bounds.size.width;
-    CGFloat b = _background.size.width;
+    CGFloat containerWidth = self.bounds.size.width;
+    CGFloat patternWidth = _background.size.width;
+
+    CGFloat containerHeight = self.bounds.size.height;
+    CGFloat patternHeight = _background.size.height;
 
     // +2 to add one to the left and other to the right; makes the transition look seamless
-    _offsetLimit = (ceilf(a / b) + 2) * b;
-    _originOffset = -b;
+    CGFloat horizontalOffset = (ceilf(containerWidth / patternWidth) + 2) * patternWidth;
+    CGFloat verticalOffset = (ceilf(containerHeight / patternHeight) + 2) * patternHeight;
+
+    _offsetLimit = CGSizeMake(horizontalOffset, verticalOffset);
+    _originOffset = CGPointMake(-patternWidth, -patternHeight);
 
     CGRect patternFrame = self.bounds;
-    patternFrame.origin.x = _originOffset;
-    patternFrame.size.width = _offsetLimit;
+    patternFrame.origin = _originOffset;
+    patternFrame.size = _offsetLimit;
 
     if (_patternView == nil) {
         _patternView = [[UIView alloc] initWithFrame:patternFrame];

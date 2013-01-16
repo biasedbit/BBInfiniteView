@@ -27,8 +27,8 @@
 #pragma mark Properties
 
 @property(strong, nonatomic) UIImage* background;
-@property(assign, nonatomic) CGFloat movementRatio;
-@property(assign, nonatomic) CGFloat displacement;
+@property(assign, nonatomic) CGSize movementRatio;
+@property(assign, nonatomic) CGPoint displacement;
 
 
 #pragma mark Creation
@@ -38,6 +38,8 @@
 
 #pragma mark Interface
 
-- (void)scrollToOffset:(CGFloat)offset;
+- (void)scrollToOffset:(CGPoint)offset;
+- (void)scrollToHorizontalOffset:(CGFloat)offset;
+- (void)scrollToVerticalOffset:(CGFloat)offset;
 
 @end
