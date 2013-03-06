@@ -34,6 +34,7 @@
     UIView* _patternView;
 }
 
+
 #pragma mark Creation
 
 - (id)initWithFrame:(CGRect)frame andImage:(UIImage*)image
@@ -57,6 +58,7 @@
 {
     [super awakeFromNib];
 
+    self.clipsToBounds = YES;
     [self setup];
 }
 
