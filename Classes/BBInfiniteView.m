@@ -75,6 +75,7 @@
     _background = background;
 
     [self setup];
+    [self setNeedsLayout];
 }
 
 - (void)setDisplacement:(CGPoint)displacement
