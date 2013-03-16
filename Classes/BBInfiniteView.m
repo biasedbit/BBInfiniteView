@@ -73,6 +73,7 @@
 - (void)setBackground:(UIImage*)background
 {
     _background = background;
+    if (_patternView != nil) _patternView.backgroundColor = [UIColor colorWithPatternImage:background];
 
     [self setup];
     [self setNeedsLayout];
