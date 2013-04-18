@@ -33,7 +33,7 @@
 
 #pragma mark Creation
 
-- (id)initWithFrame:(CGRect)frame andImage:(UIImage*)image;
+- (instancetype)initWithFrame:(CGRect)frame andImage:(UIImage*)image;
 
 
 #pragma mark Interface

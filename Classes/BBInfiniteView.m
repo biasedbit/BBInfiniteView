@@ -37,7 +37,7 @@
 
 #pragma mark Creation
 
-- (id)initWithFrame:(CGRect)frame andImage:(UIImage*)image
+- (instancetype)initWithFrame:(CGRect)frame andImage:(UIImage*)image
 {
     self = [super initWithFrame:frame];
     if (self != nil) {
