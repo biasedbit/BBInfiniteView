@@ -68,12 +68,12 @@ NSUInteger LeastCommonMultiple(NSUInteger a, NSUInteger b)
     [self prepareInfiniteView:_roadView forImage:roadViewImage];
 
     // Setup the movement ratios
-    _cloudLayerTwo.movementRatio = 0.01;
-    _cloudLayerOne.movementRatio = 0.05;
-    _buildingSkylineThree.movementRatio = 0.4;
-    _buildingSkylineTwo.movementRatio = 0.6;
-    _buildingSkylineOne.movementRatio = 0.7;
-    _roadView.movementRatio = 1;
+    _cloudLayerTwo.movementRatio = CGSizeMake(0.01, 0);
+    _cloudLayerOne.movementRatio = CGSizeMake(0.05, 0);
+    _buildingSkylineThree.movementRatio = CGSizeMake(0.4, 0);
+    _buildingSkylineTwo.movementRatio = CGSizeMake(0.6, 0);
+    _buildingSkylineOne.movementRatio = CGSizeMake(0.7, 0);
+    _roadView.movementRatio = CGSizeMake(1, 0);
 
 
     // Calculate the size for the scroll; it's the LCM for all the layers
@@ -117,7 +117,7 @@ NSUInteger LeastCommonMultiple(NSUInteger a, NSUInteger b)
 
 - (void)scrollViewDidScroll:(UIScrollView*)scrollView
 {
-    CGFloat offset = scrollView.contentOffset.x;
+    CGPoint offset = scrollView.contentOffset;
 
     [_cloudLayerTwo scrollToOffset:offset];
     [_cloudLayerOne scrollToOffset:offset];
